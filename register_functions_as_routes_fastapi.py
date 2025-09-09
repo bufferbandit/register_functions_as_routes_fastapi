@@ -1,8 +1,9 @@
+
+from types import SimpleNamespace
+from fastapi import APIRouter
 import inspect
 import re
-from types import SimpleNamespace
 
-from fastapi import APIRouter
 
 """
 Utility helpers for automatically registering FastAPI routes.
@@ -60,7 +61,9 @@ def find_routers_in_module(module):
 
 
 
-def auto_route(router,handler, methods = ["get"], *args, **kwargs):
+def auto_route(router, handler, methods=None, *args, **kwargs):
+	if methods is None:
+		methods = ["get"]
 	path = "/" + handler.__name__.replace("_", "-")
 	router.add_api_route(path, handler,
 						 methods=[method.upper() for method in methods], *args, **kwargs)
